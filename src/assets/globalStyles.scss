@@ -165,6 +165,8 @@ $spacingValues: (
     65:65px,
     80:80px,
     100:100px,
+    150:150px,
+    200:200px
 );
 
 @each $spacingSize, $spacingValue in $spacingValues {

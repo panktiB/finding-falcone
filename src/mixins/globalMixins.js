@@ -37,6 +37,7 @@ let globalMixins = {
                               url = null,
                               method = null,
                               data = null,
+                              headers = null,
                               queryParams = null,
                               responseType = 'json'
     }) {
@@ -55,12 +56,19 @@ let globalMixins = {
       if (queryString.length > 0) {
         url += queryString;
       }
+      headers = {
+        ...{
+          'Content-Type': 'application/json; charset=utf-8;',
+        },
+        ...headers,
+      };
       return new Promise((resolve, reject) => {
         axios({
           url: url,
           baseURL: 'https://findfalcone.herokuapp.com',
           method: method,
           data: data,
+          headers: headers,
           responseType: responseType,
         }).then(response => {
           resolve(response.data);

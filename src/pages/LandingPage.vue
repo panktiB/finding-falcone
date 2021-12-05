@@ -3,32 +3,11 @@
     <nav-bar />
     <vs-row class="content-container">
       <vs-col vs-w="12">
-        <vs-row class="pt-20">
-          <vs-col vs-w="1" />
-          <vs-col
-            v-for="(destination, index) in destinations"
-            :key="destination['name']"
-            vs-w="2"
-          >
-            <vs-row class="ph-10">
-              {{ destination['name'] }}
-            </vs-row>
-            <search-combo
-              :available-planets="planets"
-              :available-vehicles="vehicles"
-              :destination="destination['name']"
-              :selection="destination['selection']"
-              :disabled-planet="getSelectionValidation(index)"
-              :search-combo="searchCombo"
-              @selected="handleComboSelection(...arguments, index)"
-            />
-          </vs-col>
-          <vs-col vs-w="1">
-            <vs-row>
-              {{ `Time Taken: ${totalTime}` }}
-            </vs-row>
-          </vs-col>
-        </vs-row>
+        <router-view
+          :planets="planets"
+          :vehicles="vehicles"
+          :base-destinations="destinations"
+        />
       </vs-col>
     </vs-row>
   </div>
@@ -36,19 +15,14 @@
 
 <script>
   import NavBar from '../components/NavBar';
-  import SearchCombo from '../components/SearchCombo';
+  import { EventBus } from '../eventBus';
   export default {
     name: 'LandingPage',
-    components: { SearchCombo, NavBar },
+    components: { NavBar },
     data: function () {
       return {
         planets: [],
         vehicles: [],
-        searchCombo: {
-          token: '',
-          planet_names: [],
-          vehicle_names: [],
-        },
         destinations: [
           {
             name: 'Destination 1',
@@ -78,22 +52,15 @@
               vehicle_names: '',
             }
           },
-        ]
+        ],
       };
-    },
-    computed: {
-      totalTime: function () {
-        let time = 0;
-        this.searchCombo['vehicle_names'].forEach(vehicle => {
-          let v = this.vehicles.find(currVehicle => currVehicle['name'] === vehicle);
-          time += v['max_distance'] / v['speed'];
-        });
-        return time;
-      }
     },
     beforeMount () {
       this.fetchPlanets();
-      this.fetchVehicles();
+      EventBus.$on('search-again', this.goToSearch);
+    },
+    beforeDestroy () {
+      EventBus.$off('search-again', this.goToSearch);
     },
     methods: {
       fetchPlanets: function () {
@@ -102,6 +69,7 @@
           method: 'GET'
         }).then(planets => {
           this.planets = planets;
+          this.fetchVehicles();
         }).catch(error => {
           console.log(error);
         });
@@ -112,33 +80,18 @@
           method: 'GET'
         }).then(vehicles => {
           this.vehicles = vehicles;
+          this.goToSearch();
         }).catch(error => {
           console.log(error);
         });
       },
-      getSelectionValidation: function (index) {
-        if(index !== 0 && index <= this.destinations.length - 1) {
-          let selection = this.destinations[index - 1]['selection'];
-          return ! (!! selection['planet_names'].length && !! selection['vehicle_names'].length);
-        } else {
-          return false;
-        }
-      },
-      handleComboSelection: function (combo, index) {
-        this.destinations[index]['selection'] = combo;
-        this.updateSearchCombo();
-      },
-      updateSearchCombo: function () {
-        this.searchCombo['planet_names'] = [];
-        this.searchCombo['vehicle_names'] = [];
-        this.destinations.forEach(destination => {
-          let selection = destination['selection'];
-          if(selection['planet_names'].length && selection['vehicle_names'].length) {
-            this.searchCombo['planet_names'].push(selection['planet_names']);
-            this.searchCombo['vehicle_names'].push(selection['vehicle_names']);
-          }
+      goToSearch: function () {
+        this.routeTo('AppFalcone', {
+          planets: this.planets,
+          vehicles: this.vehicles,
+          baseDestinations: this.destinations
         });
-      },
+      }
     }
   };
 </script>

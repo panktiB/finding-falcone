@@ -41,6 +41,8 @@
 </template>
 
 <script>
+  import { EventBus } from '../eventBus';
+
   export default {
     name: 'NavBar',
     methods: {
@@ -48,7 +50,7 @@
         window.open('https://www.geektrust.in/', '_blank');
       },
       resetSearch: function () {
-        this.$emit('reset');
+        EventBus.$emit('reset');
       }
     }
   };
