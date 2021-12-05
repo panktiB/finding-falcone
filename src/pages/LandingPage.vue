@@ -3,14 +3,14 @@
     <nav-bar />
     <vs-row class="content-container">
       <vs-col vs-w="12">
-        <vs-row>
+        <vs-row class="pt-20">
+          <vs-col vs-w="1" />
           <vs-col
-            v-for="destination in destinations"
+            v-for="(destination, index) in destinations"
             :key="destination['name']"
-            vs-w="3"
-            class="bordered-primary"
+            vs-w="2"
           >
-            <vs-row>
+            <vs-row class="ph-10">
               {{ destination['name'] }}
             </vs-row>
             <search-combo
@@ -18,7 +18,15 @@
               :available-vehicles="vehicles"
               :destination="destination['name']"
               :selection="destination['selection']"
+              :disabled-planet="getSelectionValidation(index)"
+              :search-combo="searchCombo"
+              @selected="handleComboSelection(...arguments, index)"
             />
+          </vs-col>
+          <vs-col vs-w="1">
+            <vs-row>
+              {{ `Time Taken: ${totalTime}` }}
+            </vs-row>
           </vs-col>
         </vs-row>
       </vs-col>
@@ -36,6 +44,11 @@
       return {
         planets: [],
         vehicles: [],
+        searchCombo: {
+          token: '',
+          planet_names: [],
+          vehicle_names: [],
+        },
         destinations: [
           {
             name: 'Destination 1',
@@ -68,6 +81,16 @@
         ]
       };
     },
+    computed: {
+      totalTime: function () {
+        let time = 0;
+        this.searchCombo['vehicle_names'].forEach(vehicle => {
+          let v = this.vehicles.find(currVehicle => currVehicle['name'] === vehicle);
+          time += v['max_distance'] / v['speed'];
+        });
+        return time;
+      }
+    },
     beforeMount () {
       this.fetchPlanets();
       this.fetchVehicles();
@@ -91,6 +114,29 @@
           this.vehicles = vehicles;
         }).catch(error => {
           console.log(error);
+        });
+      },
+      getSelectionValidation: function (index) {
+        if(index !== 0 && index <= this.destinations.length - 1) {
+          let selection = this.destinations[index - 1]['selection'];
+          return ! (!! selection['planet_names'].length && !! selection['vehicle_names'].length);
+        } else {
+          return false;
+        }
+      },
+      handleComboSelection: function (combo, index) {
+        this.destinations[index]['selection'] = combo;
+        this.updateSearchCombo();
+      },
+      updateSearchCombo: function () {
+        this.searchCombo['planet_names'] = [];
+        this.searchCombo['vehicle_names'] = [];
+        this.destinations.forEach(destination => {
+          let selection = destination['selection'];
+          if(selection['planet_names'].length && selection['vehicle_names'].length) {
+            this.searchCombo['planet_names'].push(selection['planet_names']);
+            this.searchCombo['vehicle_names'].push(selection['vehicle_names']);
+          }
         });
       },
     }
