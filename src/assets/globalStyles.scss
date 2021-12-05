@@ -1,0 +1,703 @@
+body {
+  margin: 0;
+  overflow: hidden;
+}
+$cursorStyles: (
+    "pointer": pointer,
+    "grab": grab,
+    "text": text,
+    "not-allowed": not-allowed,
+    "default": default,
+    "col-resize":col-resize
+);
+
+@each $style, $value in $cursorStyles {
+  .#{$style}-cursor {
+    cursor: $value;
+  }
+}
+
+$heightSizes: (
+    30: 30px,
+    40: 40px,
+    50: 50px,
+    70: 70px,
+    80: 80px,
+    100: 100px,
+    130: 130px,
+    150: 150px,
+    180: 180px,
+    200: 200px,
+    250: 250px,
+    300: 300px,
+    350: 350px,
+    400: 400px,
+    450: 450px,
+    500: 500px,
+    max-content: max-content,
+    min-content: min-content,
+);
+
+@each $heightSize, $height in $heightSizes {
+  .fixed-height-#{$heightSize} {
+    height: $height !important;
+  }
+  .fixed-max-height-#{$heightSize} {
+    max-height: $height !important;
+  }
+  .fixed-min-height-#{$heightSize} {
+    min-height: $height !important;
+  }
+}
+
+@each $widthSize, $width in $heightSizes {
+  .fixed-width-#{$widthSize} {
+    width: $width !important;
+  }
+  .fixed-max-width-#{$widthSize} {
+    max-width: $width !important;
+  }
+  .fixed-min-width-#{$widthSize} {
+    min-width: $width !important;
+  }
+}
+
+$relativeHeightSizes: (
+    5: 5%,
+    10: 10%,
+    25: 25%,
+    30: 30%,
+    40: 40%,
+    50: 50%,
+    60: 60%,
+    70: 70%,
+    75: 75%,
+    80: 80%,
+    85: 85%,
+    90: 90%,
+    95: 95%,
+    100: 100%,
+    inherit: inherit,
+);
+@each $heightSize, $height in $relativeHeightSizes {
+  .relative-height-#{$heightSize} {
+    height: $height !important;
+  }
+  .relative-max-height-#{$heightSize} {
+    max-height: $height !important;
+  }
+  .relative-min-height-#{$heightSize} {
+    min-height: $height !important;
+  }
+}
+
+$widthSizes: (
+    5: 5%,
+    10: 10%,
+    14: 14%,
+    15: 15%,
+    16: 16%,
+    20: 20%,
+    25: 25%,
+    30: 30%,
+    35: 35%,
+    40: 40%,
+    50: 50%,
+    60: 60%,
+    70: 70%,
+    75: 75%,
+    80: 80%,
+    85: 85%,
+    90: 90%,
+    95: 95%,
+    100: 100%,
+    inherit: inherit,
+    max-content: max-content,
+    min-content: min-content,
+);
+@each $widthSize, $width in $widthSizes {
+  .relative-width-#{$widthSize} {
+    width: $width !important;
+  }
+  .relative-max-width-#{$widthSize} {
+    max-width: $width !important;
+  }
+  .relative-min-width-#{$widthSize} {
+    min-width: $width !important;
+  }
+}
+
+$spacingDirections: (
+    "":(top, left, right, bottom),
+    t:(top),
+    l:(left),
+    b:(bottom),
+    r:(right),
+    v:(top, bottom),
+    h:(left, right),
+);
+$spacingValues: (
+    none:0,
+    auto:auto,
+    0:0,
+    1:1px,
+    2:2px,
+    3:3px,
+    4:4px,
+    5:5px,
+    6:6px,
+    7:7px,
+    8:8px,
+    9:9px,
+    10:10px,
+    11:11px,
+    12:12px,
+    13:13px,
+    15:15px,
+    17:17px,
+    20:20px,
+    25:25px,
+    30:30px,
+    35:35px,
+    37:37px,
+    40:40px,
+    50:50px,
+    65:65px,
+    80:80px,
+    100:100px,
+);
+
+@each $spacingSize, $spacingValue in $spacingValues {
+  .border-radius-#{$spacingSize} {
+    border-radius: $spacingValue;
+  }
+  .border-radius-bottom-left-#{$spacingSize} {
+    border-bottom-left-radius: #{$spacingValue};
+  }
+  .border-radius-bottom-right-#{$spacingSize} {
+    border-bottom-right-radius: #{$spacingValue};
+  }
+  .border-radius-top-left-#{$spacingSize} {
+    border-top-left-radius: #{$spacingValue};
+  }
+  .border-radius-top-right-#{$spacingSize} {
+    border-top-right-radius: #{$spacingValue};
+  }
+  @each $spacingDirection, $stylingDirections in $spacingDirections {
+
+    .m#{$spacingDirection}-#{$spacingSize} {
+      @each $stylingDirection in $stylingDirections {
+        margin-#{$stylingDirection}: #{$spacingValue} !important;
+      }
+    }
+    .m#{$spacingDirection}--#{$spacingSize} {
+      @each $stylingDirection in $stylingDirections {
+        @if ($spacingValue == auto) {
+          margin-#{$stylingDirection}: $spacingValue !important;
+        } @else {
+          margin-#{$stylingDirection}: (-1 * $spacingValue) !important;
+        }
+      }
+    }
+    .p#{$spacingDirection}-#{$spacingSize} {
+      @each $stylingDirection in $stylingDirections {
+        padding-#{$stylingDirection}: #{$spacingValue} !important;
+      }
+    }
+
+  }
+}
+
+$borderTypes: (
+    "":"",
+    "-top":"",
+    "-bottom":"",
+    "-left":"",
+    "-right":"",
+);
+$borderStyles: (
+    "":solid,
+    "solid":solid,
+    "-dashed":dashed
+);
+$borderColors: (
+    "-primary": rgba(var(--vs-primary), 1),
+    "-secondary": rgba(var(--vs-secondary), 1),
+    "-danger":rgba(var(--vs-danger), 1),
+    "-dark": lightgray,
+    "-error": red,
+    "-blue": #6B84AF,
+    "-white": white,
+);
+$borderWidths: (
+    "":1px,
+    "-1":1px,
+    "-2":2px,
+    "-3":3px,
+    "-4":4px,
+    "-5":5px,
+    "-none":0,
+);
+
+@each $borderType, $bord in $borderTypes {
+  @each $borderSize, $borderWidth in $borderWidths {
+    @each $borderStyleType, $borderStyle in $borderStyles {
+      @each $borderColorName, $borderColor in $borderColors {
+        //how to use this class
+        // example class name :
+        // bordered {'' || '-top' || '-bottom' || '-left' || '-right' } {'' || '-dashed'} {'' || '-dark'} {'' || '-1' || '-2' || '-3' || '-4' || '-5'}
+        .bordered#{ $borderType }#{ $borderStyleType }#{$borderColorName}#{ $borderSize } {
+          border#{ $borderType} : $borderWidth $borderStyle $borderColor !important;
+        }
+
+        .bordered-hover#{ $borderType }#{ $borderStyleType }#{$borderColorName}#{ $borderSize } {
+          border: $borderWidth $borderStyle transparent !important;
+          transition: all 0.3s ease-in-out;
+
+          &:hover {
+            border#{ $borderType} : $borderWidth $borderStyle $borderColor !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+$availableOverflow: (
+    x-auto: (prop:-x, val:auto),
+    x-hidden: (prop:-x, val:hidden),
+    y-auto:(prop:-y, val:auto),
+    y-hidden: (prop:-y, val:hidden),
+    both-auto: (prop:"", val:auto),
+    both-hidden: (prop:"", val:hidden),
+);
+
+@each $_overflow, $type in $availableOverflow {
+  .overflow--#{ $_overflow } {
+    overflow#{ map_get($type ,"prop") }: map_get($type, "val") !important;
+  }
+}
+
+$fontSizes: (
+    smallest:7pt,
+    smaller:8pt,
+    small:9.5pt,
+    small-medium:10.5pt,
+    medium:11.5pt,
+    medium-regular:12.25pt,
+    regular:13pt,
+    regular-large:13.25pt,
+    large:15pt,
+    huge:17pt,
+    largest: 20pt,
+);
+@each $fontSizeName, $fontSize in $fontSizes {
+  .font-#{$fontSizeName} {
+    font-size: #{$fontSize} !important;
+  }
+}
+
+$textStyles: (
+    capitalize:capitalize,
+    uppercase:uppercase,
+    lowercase:lowercase,
+);
+@each $textStyleName, $textStyle in $textStyles {
+
+  .text-#{$textStyleName} {
+    text-transform: $textStyle !important;
+  }
+
+}
+
+.text-regular {
+  font-weight: normal !important;
+}
+
+.bg-lightgrey {
+  background-color: #f2f2f2 !important;
+}
+
+.flex-box {
+  display: flex;
+
+  &.flex-wrap {
+    flex-wrap: wrap;
+  }
+
+  &.align-center {
+    align-items: center;
+  }
+
+  &.justify-end {
+    justify-content: flex-end;
+  }
+
+  &.justify-center {
+    justify-content: center;
+  }
+}
+
+$textDecorations: (
+    "underline":underline,
+    "strike":line-through,
+);
+@each $textDecorationType, $textDecoration in $textDecorations {
+  .text-#{$textDecorationType} {
+    text-decoration: $textDecoration;
+  }
+}
+
+$fontWeights: (
+    "bold":bold,
+    "normal":normal,
+    "thick":500,
+);
+@each $fontWeightType, $fontWeight in $fontWeights {
+  .text-#{$fontWeightType} {
+    font-weight: $fontWeight;
+  }
+}
+
+$wordBreaks: (
+    "word":break-word,
+    "all":break-all,
+);
+
+
+@each $wordBreakType, $wordBreak in $wordBreaks {
+  .break-#{$wordBreakType} {
+    word-break: $wordBreak;
+  }
+}
+
+$positions: (
+    "absolute":absolute,
+    "static":static,
+    "fixed":fixed,
+    "relative":relative,
+    "sticky":sticky,
+);
+
+@each $positionType, $position in $positions {
+  .position-#{$positionType} {
+    position: $position;
+  }
+}
+
+.ellipsis-word {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.background-white {
+  background-color: white !important;
+}
+
+.background-danger {
+  background-color: rgba(var(--vs-danger), 1);
+  color: white;
+}
+
+.fixed-top {
+  position: fixed;
+  top: 0;
+}
+
+.text-white {
+  color: white;
+}
+
+.text-muted {
+  color: lightslategray;
+}
+
+.hover-text-white {
+  &:hover {
+    color: white;
+  }
+}
+// text classes
+.text-primary {
+  color: rgba(var(--vs-primary), 1) !important;
+}
+
+.text-secondary {
+  color: rgba(var(--vs-secondary), 1) !important;
+}
+
+.text-success {
+  color: rgba(var(--vs-success), 1) !important;
+}
+
+.text-danger {
+  color: rgba(var(--vs-danger), 1) !important;
+}
+
+.text-warning {
+  color: rgba(var(--vs-warning), 1) !important;
+}
+
+.text-dark {
+  color: rgba(var(--vs-dark), 1) !important;
+}
+
+.text-info {
+  color: rgba(var(--vs-info), 1) !important;
+}
+
+.text-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+
+// background classes
+
+.bg-primary {
+  background-color: rgba(var(--vs-primary), 1) !important;
+}
+
+.bg-secondary {
+  background-color: rgba(var(--vs-secondary), 1) !important;
+}
+
+.bg-success {
+  background-color: rgba(var(--vs-success), 1) !important;
+}
+
+.bg-danger {
+  background-color: rgba(var(--vs-danger), 1) !important;
+}
+
+.bg-warning {
+  background-color: rgba(var(--vs-warning), 1) !important;
+}
+
+.bg-dark {
+  background-color: rgba(var(--vs-dark), 1) !important;
+}
+
+
+// border classes
+
+.border-primary {
+  border-color: rgba(var(--vs-primary), 1) !important;
+}
+
+.border-secondary {
+  border-color: rgba(var(--vs-secondary), 1) !important;
+}
+
+.border-success {
+  border-color: rgba(var(--vs-success), 1) !important;
+}
+
+.border-danger {
+  border-color: rgba(var(--vs-danger), 1) !important;
+}
+
+.border-warning {
+  border-color: rgba(var(--vs-warning), 1) !important;
+}
+
+.border-dark {
+  border-color: rgba(var(--vs-dark), 1) !important;
+}
+
+
+// hover background classes
+
+.hover\:bg-primary {
+  &:hover {
+    background-color: rgba(var(--vs-primary), 1) !important;
+  }
+}
+
+.hover\:bg-secondary {
+  &:hover {
+    background-color: rgba(var(--vs-secondary), 1) !important;
+  }
+}
+
+.hover\:bg-success {
+  &:hover {
+    background-color: rgba(var(--vs-success), 1) !important;
+  }
+}
+
+.hover\:bg-danger {
+  &:hover {
+    background-color: rgba(var(--vs-danger), 1) !important;
+  }
+}
+
+.hover\:bg-warning {
+  &:hover {
+    background-color: rgba(var(--vs-warning), 1) !important;
+  }
+}
+
+.hover\:bg-dark {
+  &:hover {
+    background-color: rgba(var(--vs-dark), 1) !important;
+  }
+}
+
+.hover\:bg-lightgrey {
+  &:hover {
+    background-color: #f2f2f2 !important;
+  }
+}
+
+
+// hover text colors
+.hover\:text-primary {
+  &:hover {
+    color: rgba(var(--vs-primary), 1) !important;
+  }
+}
+
+.hover\:text-secondary {
+  &:hover {
+    color: rgba(var(--vs-secondary), 1) !important;
+  }
+}
+
+.hover\:text-success {
+  &:hover {
+    color: rgba(var(--vs-success), 1) !important;
+  }
+}
+
+.hover\:text-danger {
+  &:hover {
+    color: rgba(var(--vs-danger), 1) !important;
+  }
+}
+
+.hover\:text-warning {
+  &:hover {
+    color: rgba(var(--vs-warning), 1) !important;
+  }
+}
+
+// hover border class
+.hover\:border-light {
+  &:hover {
+    border: 1px solid lightgrey;
+    border-radius: 2px;
+  }
+}
+
+.hover\:text-dark {
+  &:hover {
+    color: rgba(var(--vs-dark), 1) !important;
+  }
+}
+
+.hover\:border-primary {
+  &:hover {
+    border: 1px solid rgba(var(--vs-primary), 1) !important;
+  }
+}
+
+.hover\:border-secondary {
+  &:hover {
+    border: 1px solid rgba(var(--vs-secondary), 1) !important;
+  }
+}
+
+.hover\:border-success {
+  &:hover {
+    border: 1px solid rgba(var(--vs-success), 1) !important;
+  }
+}
+
+.hover\:border-danger {
+  &:hover {
+    border: 1px solid rgba(var(--vs-danger), 1) !important;
+  }
+}
+
+.hover\:border-warning {
+  &:hover {
+    border: 1px solid rgba(var(--vs-warning), 1) !important;
+  }
+}
+
+// Gradient colors
+.bg-primary-gradient {
+  background: linear-gradient(118deg, rgba(var(--vs-primary), 1), rgba(var(--vs-primary), .7)) !important;
+}
+
+.bg-secondary-gradient {
+  background: linear-gradient(118deg, rgba(var(--vs-secondary), 1), rgba(var(--vs-secondary), .7)) !important;
+}
+
+.bg-success-gradient {
+  background: linear-gradient(118deg, rgba(var(--vs-success), 1), rgba(var(--vs-success), .7)) !important;
+}
+
+.bg-danger-gradient {
+  background: linear-gradient(118deg, rgba(var(--vs-danger), 1), rgba(var(--vs-danger), .7)) !important;
+}
+
+.bg-warning-gradient {
+  background: linear-gradient(118deg, rgba(var(--vs-warning), 1), rgba(var(--vs-warning), .7)) !important;
+}
+
+.bg-dark-gradient {
+  background: linear-gradient(118deg, rgba(var(--vs-dark), 1), rgba(var(--vs-dark), .7)) !important;
+}
+
+.text-align-right {
+  text-align: right;
+}
+
+.text-align-left {
+  text-align: left;
+  justify-content: flex-start;
+}
+
+.text-align-justify {
+  text-align: justify;
+}
+
+.text-align-center {
+  text-align: center;
+  justify-content: center;
+}
+
+.text-dark-grey {
+  color: #494949;
+}
+
+.text-grey {
+  color: #626262;
+}
+
+.text-lightgrey {
+  color: #8a8a8a;
+}
+
+.text-lightestgrey {
+  color: #cacaca;
+}
+
+.free-letter-spacing {
+  letter-spacing: 1px;
+}
+
+.medium-letter-spacing {
+  letter-spacing: 0.5px;
+}
+
+.display-block {
+  display: block;
+}
+
+.display-inline-block {
+  display: inline-block;
+}
